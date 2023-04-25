@@ -1,5 +1,5 @@
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -pthread -g3 -fsanitize=thread
+CFLAGS		= -Wall -Wextra -Werror -pthread #-g3 -fsanitize=thread
 RM			= rm -f
 SRCD		= ./src/
 SRC			= utils.c main.c init.c philo.c

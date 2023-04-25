@@ -6,7 +6,7 @@
 /*   By: vpac <vpac@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 18:13:24 by vpac              #+#    #+#             */
-/*   Updated: 2023/04/24 13:11:25 by vpac             ###   ########.fr       */
+/*   Updated: 2023/04/25 16:20:18 by vpac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,31 @@
 
 int	take_fork(t_philo *philo)
 {
-	pthread_mutex_lock(&(philo->data->secure_fork));
 	pthread_mutex_lock(&(philo->data->fork[philo->num]));
-	if (!print("has taken a fork", philo))
-		return (0);
-	if (philo->data->nb_philo == 1)
-	{
-		my_sleep(philo->data->time_death);
-		pthread_mutex_unlock(&(philo->data->fork[philo->num]));
-		print("died", philo);
-		pthread_mutex_unlock(&(philo->data->secure_fork));
-		return (0);
-	}
 	pthread_mutex_lock(&(philo->data->fork[(philo->num + 1)
 			% philo->data->nb_philo]));
 	if (!print("has taken a fork", philo))
+		return (0);
+	pthread_mutex_unlock(&(philo->data->fork[philo->num]));
+	pthread_mutex_lock(&(philo->data->fork[(philo->num + 1)
+			% philo->data->nb_philo]));
+	if (philo->data->nb_philo == 1)
 	{
-		pthread_mutex_unlock(&(philo->data->secure_fork));
+		pthread_mutex_lock(&(philo->data->death_mutex));
+		my_sleep(philo->data->time_death);
+		print("died", philo);
+		pthread_mutex_unlock(&(philo->data->death_mutex));
 		return (0);
 	}
+	if (!print("has taken a fork", philo))
+		return (0);
 	return (1);
 }
 
 int	death_check(t_philo *philo)
 {
-	pthread_mutex_lock(&(philo->data->death_mutex));
 	if (philo->data->death_check)
-	{
-		pthread_mutex_unlock(&(philo->data->death_mutex));
 		return (0);
-	}
-	pthread_mutex_unlock(&(philo->data->death_mutex));
 	if (((gettime() - philo->data->start_time) - philo->last_eat)
 		>=	philo->data->time_death)
 	{
@@ -61,18 +55,10 @@ int	eating(t_philo *philo)
 	philo->last_eat = gettime() - philo->data->start_time;
 	my_sleep(philo->data->time_eat);
 	philo->count++;
-	pthread_mutex_unlock(&(philo->data->fork[philo->num]));
-	pthread_mutex_unlock(&(philo->data->fork[(philo->num + 1)
-					% philo->data->nb_philo]));
-	pthread_mutex_lock(&(philo->data->eat_mutex));
 	if (philo->count == philo->data->nb_eat)
 		philo->data->count++;
 	if (philo->data->count == philo->data->nb_philo)
-	{
-		pthread_mutex_unlock(&(philo->data->eat_mutex));
 		return (0);
-	}
-	pthread_mutex_unlock(&(philo->data->eat_mutex));
 	if (!print("is sleeping", philo))
 		return (0);
 	my_sleep(philo->data->time_sleep);
