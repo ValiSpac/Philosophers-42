@@ -6,7 +6,7 @@
 /*   By: vpac <vpac@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 12:50:42 by vpac              #+#    #+#             */
-/*   Updated: 2023/04/24 10:15:49 by vpac             ###   ########.fr       */
+/*   Updated: 2023/04/28 17:47:33 by vpac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 typedef struct s_philo	t_philo;
 
-typedef struct	s_data
+typedef struct s_data
 {
 	long long int	start_time;
 	long			nb_philo;
@@ -50,6 +50,8 @@ typedef struct s_philo
 //utils
 int			ft_atoi(const char *str);
 void		free_all(t_data *data);
+int			is_num(char *str);
+void		ft_swap(int a, int b);
 
 //init
 void		init_data(t_data *data, int ac, char **argv);

@@ -6,7 +6,7 @@
 /*   By: vpac <vpac@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 14:00:32 by vpac              #+#    #+#             */
-/*   Updated: 2023/04/25 15:14:35 by vpac             ###   ########.fr       */
+/*   Updated: 2023/04/28 17:41:45 by vpac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	init_philo(t_data *data)
 	int	i;
 
 	i = -1;
-	while(++i < data->nb_philo)
+	while (++i < data->nb_philo)
 	{
 		pthread_mutex_init(&data->fork[i], NULL);
 		data->philo[i].num = i;
@@ -29,7 +29,7 @@ void	init_philo(t_data *data)
 	while (++i < data->nb_philo)
 	{
 		pthread_create(&data->philo[i].thread, NULL,
-				philo_control, &data->philo[i]);
+			philo_control, &data->philo[i]);
 	}
 	i = -1;
 	while (++i < data->nb_philo)

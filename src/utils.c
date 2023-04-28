@@ -6,11 +6,49 @@
 /*   By: vpac <vpac@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 13:05:16 by vpac              #+#    #+#             */
-/*   Updated: 2023/04/24 15:35:21 by vpac             ###   ########.fr       */
+/*   Updated: 2023/04/28 17:45:48 by vpac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+
+static int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+	{
+		return (1);
+	}
+	return (0);
+}
+
+int	is_num(char *str)
+{
+	int	j;
+
+	j = 0;
+	while (str[j] == ' ' || str[j] == '\t')
+		j++;
+	if (str[j] == '-')
+		return (0);
+	if (str[j] == '+' && str[1])
+		j++;
+	while (str[j])
+	{
+		if (!ft_isdigit(str[j]))
+			return (0);
+		j++;
+	}
+	return (1);
+}
+
+void	ft_swap(int a, int b)
+{
+	int	temp;
+
+	temp = a;
+	a = b;
+	b = temp;
+}
 
 int	ft_atoi(const char *str)
 {
@@ -35,7 +73,6 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (tmp * a);
-
 }
 
 void	free_all(t_data *data)
