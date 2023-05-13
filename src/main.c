@@ -6,7 +6,7 @@
 /*   By: vpac <vpac@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 12:49:20 by vpac              #+#    #+#             */
-/*   Updated: 2023/04/28 17:43:35 by vpac             ###   ########.fr       */
+/*   Updated: 2023/05/13 15:12:09 by vpac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,24 @@ static int	check_format(int argc, char **argv)
 
 int	print(char *s, t_philo *philo)
 {
-	pthread_mutex_lock(&(philo->data->print_mutex));
 	pthread_mutex_lock(&(philo->data->death_mutex));
+	pthread_mutex_lock(&(philo->data->print_mutex));
 	if (philo->data->death_check)
 	{
-		pthread_mutex_unlock(&(philo->data->death_mutex));
 		pthread_mutex_unlock(&(philo->data->print_mutex));
+		pthread_mutex_unlock(&(philo->data->death_mutex));
 		return (0);
 	}
-	pthread_mutex_unlock(&(philo->data->death_mutex));
 	printf("%llu %d %s\n", gettime() - philo->data->start_time,
 		philo->num + 1, s);
+	pthread_mutex_unlock(&(philo->data->print_mutex));
+	pthread_mutex_unlock(&(philo->data->death_mutex));
 	if (s[0] == 'd')
 	{
 		pthread_mutex_lock(&(philo->data->death_mutex));
 		philo->data->death_check = 1;
 		pthread_mutex_unlock(&(philo->data->death_mutex));
 	}
-	pthread_mutex_unlock(&(philo->data->print_mutex));
 	return (1);
 }
 

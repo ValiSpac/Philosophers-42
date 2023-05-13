@@ -6,7 +6,7 @@
 /*   By: vpac <vpac@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 18:13:24 by vpac              #+#    #+#             */
-/*   Updated: 2023/04/28 18:15:01 by vpac             ###   ########.fr       */
+/*   Updated: 2023/05/13 15:01:30 by vpac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ int	take_fork(t_philo *philo)
 		ft_swap(lower_fork, higher_fork);
 	pthread_mutex_lock(&(philo->data->fork[lower_fork]));
 	if (!print("has taken a fork", philo))
-	{
-		pthread_mutex_unlock(&(philo->data->fork[lower_fork]));
-		return (0);
-	}
+		return (pthread_mutex_unlock(&(philo->data->fork[lower_fork])), 0);
 	if (philo->data->nb_philo == 1)
 	{
 		my_sleep(philo->data->time_death);

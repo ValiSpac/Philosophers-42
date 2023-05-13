@@ -6,11 +6,31 @@
 /*   By: vpac <vpac@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 14:00:32 by vpac              #+#    #+#             */
-/*   Updated: 2023/04/28 17:41:45 by vpac             ###   ########.fr       */
+/*   Updated: 2023/05/13 15:49:45 by vpac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+
+void	wait_death(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i <= data->nb_philo + 1)
+	{
+		if (i == data->nb_philo)
+			i = 0;
+		if (data->philo[i].data->death_check)
+			{
+				i = -1;
+				while (++i < data->nb_philo)
+					data->philo[i].data->death_check = 1;
+				break;
+			}
+		i++;
+	}
+}
 
 void	init_philo(t_data *data)
 {
@@ -32,6 +52,7 @@ void	init_philo(t_data *data)
 			philo_control, &data->philo[i]);
 	}
 	i = -1;
+	wait_death(data);
 	while (++i < data->nb_philo)
 		pthread_join(data->philo[i].thread, NULL);
 }
