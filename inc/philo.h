@@ -6,7 +6,7 @@
 /*   By: vpac <vpac@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 12:50:42 by vpac              #+#    #+#             */
-/*   Updated: 2023/04/28 17:47:33 by vpac             ###   ########.fr       */
+/*   Updated: 2023/05/24 17:00:11 by vpac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_philo	t_philo;
 
 typedef struct s_data
 {
+	int				*fork_locked;
 	long long int	start_time;
 	long			nb_philo;
 	long			time_death;
@@ -36,16 +37,17 @@ typedef struct s_data
 	pthread_mutex_t	eat_mutex;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	death_mutex;
-	pthread_mutex_t	secure_fork;
+	pthread_mutex_t	completion_mutex;
 }			t_data;
 
 typedef struct s_philo
 {
-	long		last_eat;
-	int			num;
-	int			count;
-	t_data		*data;
-	pthread_t	thread;
+	long			last_eat;
+	int				num;
+	int				count;
+	t_data			*data;
+	pthread_t		thread;
+	pthread_mutex_t	eat_last;
 }	t_philo;
 //utils
 int			ft_atoi(const char *str);

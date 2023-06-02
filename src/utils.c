@@ -6,7 +6,7 @@
 /*   By: vpac <vpac@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 13:05:16 by vpac              #+#    #+#             */
-/*   Updated: 2023/04/28 17:45:48 by vpac             ###   ########.fr       */
+/*   Updated: 2023/05/29 12:36:55 by vpac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ void	free_all(t_data *data)
 {
 	int	i;
 
-	i = 0;
-	while (i < data->nb_philo)
-	{
-		pthread_mutex_destroy(&(data->fork[i]));
-		i++;
-	}
+	i = -1;
+	pthread_mutex_lock(&(data->completion_mutex));
+	while (++i < data->nb_philo)
+		pthread_mutex_destroy(&(data->philo[i].eat_last));
+	pthread_mutex_unlock(&(data->completion_mutex));
+	pthread_mutex_destroy(&(data->completion_mutex));
 	pthread_mutex_destroy(&data->eat_mutex);
 	pthread_mutex_destroy(&data->print_mutex);
 	pthread_mutex_destroy(&data->death_mutex);
